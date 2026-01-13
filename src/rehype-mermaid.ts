@@ -65,15 +65,15 @@ function validateStrategy(strategy: Strategy | undefined = 'inline-svg'): Strate
  *   Whether or not the element has the `language-mermaid` class name.
  */
 function isMermaidElement(element: Element, strategy: Strategy): boolean {
-  let mermaidClassName: string
+  let allowedClassNames: string[] = []
 
   if (element.tagName === 'pre') {
     if (strategy === 'pre-mermaid') {
       return false
     }
-    mermaidClassName = 'mermaid'
+    allowedClassNames = ['mermaid', 'language-mermaid'] // <- ajout de language-mermaid
   } else if (element.tagName === 'code') {
-    mermaidClassName = 'language-mermaid'
+    allowedClassNames = ['language-mermaid']
   } else {
     return false
   }
@@ -87,7 +87,7 @@ function isMermaidElement(element: Element, strategy: Strategy): boolean {
     return false
   }
 
-  return className.includes(mermaidClassName)
+  return allowedClassNames.some((cls) => className.includes(cls))
 }
 
 /**
